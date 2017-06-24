@@ -29,6 +29,7 @@ source('./MARINeR/R/matrixToVolume.R')
 source('./MARINeR/R/preproc.indiv.R')
 source('./TempCode/PreProc_Funcs.R')
 source('./MARINeR/R/drop.TRs.R')
+source('./MARINeR/R/concatenate.data.R')
 
 #source('../NewR/makeNominalData.R')
 library(neuroim)
@@ -72,10 +73,11 @@ data.list.preproc<-preproc.indiv(data.list.dropped)
 ## and then all embedded in a PCA function
 
 ## linear detrend, row normalize, then column center.
-concat.data <- cbind(
-  expo.scale(rowNorms(apply(data.list$sub.09$dataMatrixPreproc,2,function(x){resid( lm( x~seq(x) ) )}),type="z"),center=T,scale=F),
-  expo.scale(rowNorms(apply(data.list$sub.15$dataMatrixPreproc,2,function(x){resid( lm( x~seq(x) ) )}),type="z"),center=T,scale=F)
-  )
+concat.data <- concatenate.data(data.list.preproc)
+#concat.data <- cbind(
+#  expo.scale(rowNorms(apply(data.list$sub.09$dataMatrixPreproc,2,function(x){resid( lm( x~seq(x) ) )}),type="z"),center=T,scale=F),
+#  expo.scale(rowNorms(apply(data.list$sub.15$dataMatrixPreproc,2,function(x){resid( lm( x~seq(x) ) )}),type="z"),center=T,scale=F)
+#  )
 participant.design <- c(
   rep("sub.09",ncol(data.list$sub.09$dataMatrixPreproc)),
   rep("sub.15",ncol(data.list$sub.15$dataMatrixPreproc))

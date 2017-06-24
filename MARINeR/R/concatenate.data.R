@@ -1,5 +1,4 @@
 require(assertthat)
-require(data.table)
 
 have.same.number.vols <- function(subject.data, design){
   assert_that(not_empty(subject.data), not_empty(design))
@@ -31,11 +30,12 @@ concatenate.data <- function(masked.subject.data, concat.method='tr-task-by-voxe
     have.same.number.vols(masked.subject.data[[subj]]$dataMatrixPreproc, masked.subject.data[[subj]]$dataDesign[[1]])
     if (concat.method == 'tr-task-by-voxel'){
       data.vec[[subj]] <- vectorize.by.vol.task(masked.subject.data[[subj]]$dataMatrixPreproc, masked.subject.data[[subj]]$dataDesign[[1]])
-      #ncol.subj <- dim(data.vec[[subj]])[2]
+      ncol.subj <- dim(data.vec[[subj]])[2]
+     # still need to get vector of subject names for each voxel and each block
     }
   }
   data.mat <- do.call('cbind', data.vec)
   return(data.mat)
 }
 
-#datamatrix <- concatenate.data(data.list, concat.method = 'tr-task-by-voxel')
+datamatrix <- concatenate.data(data.list)
